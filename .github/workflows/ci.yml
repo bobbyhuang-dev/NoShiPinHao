@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: macos-26
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: swift-format
+        run: xcrun swift-format lint --strict --recursive NoShiPingHao NoShiPingHaoTests NoShiPingHaoUITests
+
+  test:
+    name: Build and test
+    runs-on: macos-26
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Show Xcode version
+        run: xcodebuild -version
+      - name: Build and test
+        run: |
+          set -o pipefail
+          xcodebuild test \
+            -project NoShiPingHao.xcodeproj \
+            -scheme NoShiPingHao \
+            -destination 'platform=macOS' \
+            -resultBundlePath TestResults.xcresult
+      - name: Upload test results
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: TestResults
+          path: TestResults.xcresult
