@@ -1,6 +1,6 @@
 import XCTest
 
-final class NoShiPingHaoUITests: XCTestCase {
+final class NoShiPinHaoUITests: XCTestCase {
     override func setUpWithError() throws {
         continueAfterFailure = false
     }

@@ -1,32 +1,38 @@
-name: Bug report
-description: Report something that isn't working.
+name: 问题反馈
+description: 报告无法正常工作的功能。
 labels: [bug]
 body:
   - type: textarea
     id: description
     attributes:
-      label: What happened?
-      description: Include what you expected to happen instead.
+      label: 发生了什么？
+      description: 请同时说明你期望的结果。
     validations:
       required: true
   - type: textarea
     id: steps
     attributes:
-      label: Steps to reproduce
+      label: 复现步骤
       placeholder: |
-        1. Open the app
-        2. Click …
+        1. 打开应用
+        2. 点击……
     validations:
       required: true
   - type: input
     id: app-version
     attributes:
-      label: App version
+      label: 应用版本
+    validations:
+      required: true
+  - type: input
+    id: wechat-version
+    attributes:
+      label: 微信版本
     validations:
       required: true
   - type: input
     id: macos-version
     attributes:
-      label: macOS version
+      label: macOS 版本
     validations:
       required: true

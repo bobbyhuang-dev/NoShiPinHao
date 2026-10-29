@@ -21,7 +21,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - name: swift-format
-        run: xcrun swift-format lint --strict --recursive NoShiPingHao NoShiPingHaoTests NoShiPingHaoUITests
+        run: xcrun swift-format lint --strict --recursive NoShiPinHao NoShiPinHaoTests NoShiPinHaoUITests
 
   test:
     name: Build and test
@@ -35,8 +35,8 @@ jobs:
         run: |
           set -o pipefail
           xcodebuild test \
-            -project NoShiPingHao.xcodeproj \
-            -scheme NoShiPingHao \
+            -project NoShiPinHao.xcodeproj \
+            -scheme NoShiPinHao \
             -destination 'platform=macOS' \
             -resultBundlePath TestResults.xcresult
       - name: Upload test results

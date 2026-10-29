@@ -13,7 +13,7 @@ struct ContentView: View {
             if let selection {
                 DetailView(item: selection)
             } else {
-                ContentUnavailableView("No Selection", systemImage: "sidebar.left")
+                ContentUnavailableView("未选择", systemImage: "sidebar.left")
             }
         }
         .frame(minWidth: 640, minHeight: 400)

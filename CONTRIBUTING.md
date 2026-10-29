@@ -1,6 +1,18 @@
-# Contributing
+# 贡献指南
 
-1. Fork the repository and create a branch from `main`.
-2. Make your change. Add tests for new behavior.
-3. Run the tests and the linter (see [README](README.md#commands)).
-4. Open a pull request. CI must pass before it can merge.
+1. Fork 本仓库，并从 `main` 创建分支。
+2. 完成修改，并为新行为添加测试。
+3. 运行测试和代码检查（见 [README](README.md#常用命令)）。
+4. 提交 Pull Request。CI 通过后才能合并。
+
+## 语言约定
+
+| 内容 | 语言 |
+| --- | --- |
+| 标识符（类型、函数、变量、文件名） | 英文，不使用拼音 |
+| 代码注释 | 中文 |
+| 界面文字 | 简体中文，直接写在代码中 |
+| 提交信息 | 英文前缀 + 中文描述，例如 `fix: 修复视频号入口重新出现的问题` |
+| 分支名、标签 | 英文或 ASCII |
+
+视频号在代码中统一称为 **Channels**（微信官方英文名），例如 `ChannelsBlocker`、`hideChannelsEntry`。

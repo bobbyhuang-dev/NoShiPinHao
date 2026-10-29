@@ -8,8 +8,8 @@ nonisolated enum SidebarItem: String, CaseIterable, Identifiable {
 
     var title: LocalizedStringKey {
         switch self {
-        case .home: "Home"
-        case .library: "Library"
+        case .home: "首页"
+        case .library: "资料库"
         }
     }
 
