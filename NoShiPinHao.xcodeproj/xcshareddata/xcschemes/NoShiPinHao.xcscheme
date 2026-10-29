@@ -16,9 +16,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "F88AD60055D76F3EA345DA62"
-               BuildableName = "NoShiPingHao.app"
-               BlueprintName = "NoShiPingHao"
-               ReferencedContainer = "container:NoShiPingHao.xcodeproj">
+               BuildableName = "NoShiPinHao.app"
+               BlueprintName = "NoShiPinHao"
+               ReferencedContainer = "container:NoShiPinHao.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -34,9 +34,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "F88AD60055D76F3EA345DA62"
-            BuildableName = "NoShiPingHao.app"
-            BlueprintName = "NoShiPingHao"
-            ReferencedContainer = "container:NoShiPingHao.xcodeproj">
+            BuildableName = "NoShiPinHao.app"
+            BlueprintName = "NoShiPinHao"
+            ReferencedContainer = "container:NoShiPinHao.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <Testables>
@@ -46,9 +46,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "6A670E31C985925BA2494A72"
-               BuildableName = "NoShiPingHaoTests.xctest"
-               BlueprintName = "NoShiPingHaoTests"
-               ReferencedContainer = "container:NoShiPingHao.xcodeproj">
+               BuildableName = "NoShiPinHaoTests.xctest"
+               BlueprintName = "NoShiPinHaoTests"
+               ReferencedContainer = "container:NoShiPinHao.xcodeproj">
             </BuildableReference>
          </TestableReference>
          <TestableReference
@@ -57,9 +57,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "22A490B8AF51CB3D0E23833C"
-               BuildableName = "NoShiPingHaoUITests.xctest"
-               BlueprintName = "NoShiPingHaoUITests"
-               ReferencedContainer = "container:NoShiPingHao.xcodeproj">
+               BuildableName = "NoShiPinHaoUITests.xctest"
+               BlueprintName = "NoShiPinHaoUITests"
+               ReferencedContainer = "container:NoShiPinHao.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -69,9 +69,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "F88AD60055D76F3EA345DA62"
-            BuildableName = "NoShiPingHao.app"
-            BlueprintName = "NoShiPingHao"
-            ReferencedContainer = "container:NoShiPingHao.xcodeproj">
+            BuildableName = "NoShiPinHao.app"
+            BlueprintName = "NoShiPinHao"
+            ReferencedContainer = "container:NoShiPinHao.xcodeproj">
          </BuildableReference>
       </CodeCoverageTargets>
    </TestAction>
@@ -90,9 +90,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "F88AD60055D76F3EA345DA62"
-            BuildableName = "NoShiPingHao.app"
-            BlueprintName = "NoShiPingHao"
-            ReferencedContainer = "container:NoShiPingHao.xcodeproj">
+            BuildableName = "NoShiPinHao.app"
+            BlueprintName = "NoShiPinHao"
+            ReferencedContainer = "container:NoShiPinHao.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <CommandLineArguments>
@@ -109,9 +109,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "F88AD60055D76F3EA345DA62"
-            BuildableName = "NoShiPingHao.app"
-            BlueprintName = "NoShiPingHao"
-            ReferencedContainer = "container:NoShiPingHao.xcodeproj">
+            BuildableName = "NoShiPinHao.app"
+            BlueprintName = "NoShiPinHao"
+            ReferencedContainer = "container:NoShiPinHao.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

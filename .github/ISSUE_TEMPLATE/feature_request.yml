@@ -1,14 +1,14 @@
-name: Feature request
-description: Suggest an idea for the app.
+name: 功能建议
+description: 为应用提出新想法。
 labels: [enhancement]
 body:
   - type: textarea
     id: problem
     attributes:
-      label: What problem would this solve?
+      label: 这个功能能解决什么问题？
     validations:
       required: true
   - type: textarea
     id: solution
     attributes:
-      label: What would you like to happen?
+      label: 你希望它如何工作？

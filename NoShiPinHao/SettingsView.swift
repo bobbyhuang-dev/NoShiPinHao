@@ -3,7 +3,7 @@ import SwiftUI
 struct SettingsView: View {
     var body: some View {
         TabView {
-            Tab("General", systemImage: "gearshape") {
+            Tab("通用", systemImage: "gearshape") {
                 GeneralSettingsView()
             }
         }
@@ -17,7 +17,7 @@ private struct GeneralSettingsView: View {
 
     var body: some View {
         Form {
-            Toggle("Show welcome on launch", isOn: $showWelcomeOnLaunch)
+            Toggle("启动时显示欢迎页", isOn: $showWelcomeOnLaunch)
         }
     }
 }

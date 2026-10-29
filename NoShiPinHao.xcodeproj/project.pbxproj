@@ -12,49 +12,49 @@
 			containerPortal = 38B22BEE9E36F606129078A5 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = F88AD60055D76F3EA345DA62;
-			remoteInfo = NoShiPingHao;
+			remoteInfo = NoShiPinHao;
 		};
 		CBBA8E72EBDF6210E1446197 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 38B22BEE9E36F606129078A5 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = F88AD60055D76F3EA345DA62;
-			remoteInfo = NoShiPingHao;
+			remoteInfo = NoShiPinHao;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		19CEEE6527B921F1CA788DB7 /* NoShiPingHaoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NoShiPingHaoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		622832EA0A1191941DFE7ADB /* NoShiPingHao.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NoShiPingHao.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		9B71BFB2C7AD78DA64FF3E51 /* NoShiPingHaoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NoShiPingHaoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		19CEEE6527B921F1CA788DB7 /* NoShiPinHaoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NoShiPinHaoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		622832EA0A1191941DFE7ADB /* NoShiPinHao.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NoShiPinHao.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9B71BFB2C7AD78DA64FF3E51 /* NoShiPinHaoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NoShiPinHaoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		0D7D6FC50BE388CB03CADF80 /* NoShiPingHao */ = {
+		0D7D6FC50BE388CB03CADF80 /* NoShiPinHao */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			explicitFileTypes = {
 			};
 			explicitFolders = (
 			);
-			path = NoShiPingHao;
+			path = NoShiPinHao;
 			sourceTree = "<group>";
 		};
-		3AD8A0DE0871CD950AE1CE24 /* NoShiPingHaoUITests */ = {
+		3AD8A0DE0871CD950AE1CE24 /* NoShiPinHaoUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			explicitFileTypes = {
 			};
 			explicitFolders = (
 			);
-			path = NoShiPingHaoUITests;
+			path = NoShiPinHaoUITests;
 			sourceTree = "<group>";
 		};
-		90CE7E7278A335E845F55C52 /* NoShiPingHaoTests */ = {
+		90CE7E7278A335E845F55C52 /* NoShiPinHaoTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			explicitFileTypes = {
 			};
 			explicitFolders = (
 			);
-			path = NoShiPingHaoTests;
+			path = NoShiPinHaoTests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -63,9 +63,9 @@
 		5CFFD3B6DE4B96598C8E5187 = {
 			isa = PBXGroup;
 			children = (
-				0D7D6FC50BE388CB03CADF80 /* NoShiPingHao */,
-				90CE7E7278A335E845F55C52 /* NoShiPingHaoTests */,
-				3AD8A0DE0871CD950AE1CE24 /* NoShiPingHaoUITests */,
+				0D7D6FC50BE388CB03CADF80 /* NoShiPinHao */,
+				90CE7E7278A335E845F55C52 /* NoShiPinHaoTests */,
+				3AD8A0DE0871CD950AE1CE24 /* NoShiPinHaoUITests */,
 				D4DD536829BBE1EEFFD100BA /* Products */,
 			);
 			sourceTree = "<group>";
@@ -73,9 +73,9 @@
 		D4DD536829BBE1EEFFD100BA /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				622832EA0A1191941DFE7ADB /* NoShiPingHao.app */,
-				19CEEE6527B921F1CA788DB7 /* NoShiPingHaoTests.xctest */,
-				9B71BFB2C7AD78DA64FF3E51 /* NoShiPingHaoUITests.xctest */,
+				622832EA0A1191941DFE7ADB /* NoShiPinHao.app */,
+				19CEEE6527B921F1CA788DB7 /* NoShiPinHaoTests.xctest */,
+				9B71BFB2C7AD78DA64FF3E51 /* NoShiPinHaoUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -83,9 +83,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		22A490B8AF51CB3D0E23833C /* NoShiPingHaoUITests */ = {
+		22A490B8AF51CB3D0E23833C /* NoShiPinHaoUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 403DC06F0FC0C499EB635E9F /* Build configuration list for PBXNativeTarget "NoShiPingHaoUITests" */;
+			buildConfigurationList = 403DC06F0FC0C499EB635E9F /* Build configuration list for PBXNativeTarget "NoShiPinHaoUITests" */;
 			buildPhases = (
 				809808CEC473DF32BB81F974 /* Sources */,
 				B8741C11247B8530A04215DA /* Resources */,
@@ -96,18 +96,18 @@
 				201ADEEC357C0791646D4E2D /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				3AD8A0DE0871CD950AE1CE24 /* NoShiPingHaoUITests */,
+				3AD8A0DE0871CD950AE1CE24 /* NoShiPinHaoUITests */,
 			);
-			name = NoShiPingHaoUITests;
+			name = NoShiPinHaoUITests;
 			packageProductDependencies = (
 			);
-			productName = NoShiPingHaoUITests;
-			productReference = 9B71BFB2C7AD78DA64FF3E51 /* NoShiPingHaoUITests.xctest */;
+			productName = NoShiPinHaoUITests;
+			productReference = 9B71BFB2C7AD78DA64FF3E51 /* NoShiPinHaoUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
-		6A670E31C985925BA2494A72 /* NoShiPingHaoTests */ = {
+		6A670E31C985925BA2494A72 /* NoShiPinHaoTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5039307BCF942319C83F8720 /* Build configuration list for PBXNativeTarget "NoShiPingHaoTests" */;
+			buildConfigurationList = 5039307BCF942319C83F8720 /* Build configuration list for PBXNativeTarget "NoShiPinHaoTests" */;
 			buildPhases = (
 				33330C3FAFB4E92A4E5CCFE2 /* Sources */,
 				908A4E12E8D9202A6DC98DE4 /* Resources */,
@@ -118,18 +118,18 @@
 				2E11EB26A8A61D2E6C6CFA58 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				90CE7E7278A335E845F55C52 /* NoShiPingHaoTests */,
+				90CE7E7278A335E845F55C52 /* NoShiPinHaoTests */,
 			);
-			name = NoShiPingHaoTests;
+			name = NoShiPinHaoTests;
 			packageProductDependencies = (
 			);
-			productName = NoShiPingHaoTests;
-			productReference = 19CEEE6527B921F1CA788DB7 /* NoShiPingHaoTests.xctest */;
+			productName = NoShiPinHaoTests;
+			productReference = 19CEEE6527B921F1CA788DB7 /* NoShiPinHaoTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		F88AD60055D76F3EA345DA62 /* NoShiPingHao */ = {
+		F88AD60055D76F3EA345DA62 /* NoShiPinHao */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 206040EBC8D9C0E404C4B4BD /* Build configuration list for PBXNativeTarget "NoShiPingHao" */;
+			buildConfigurationList = 206040EBC8D9C0E404C4B4BD /* Build configuration list for PBXNativeTarget "NoShiPinHao" */;
 			buildPhases = (
 				4E7BB992808A5802AAF310BC /* Sources */,
 				D7C03FF33823D7119CB85006 /* Resources */,
@@ -139,13 +139,13 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				0D7D6FC50BE388CB03CADF80 /* NoShiPingHao */,
+				0D7D6FC50BE388CB03CADF80 /* NoShiPinHao */,
 			);
-			name = NoShiPingHao;
+			name = NoShiPinHao;
 			packageProductDependencies = (
 			);
-			productName = NoShiPingHao;
-			productReference = 622832EA0A1191941DFE7ADB /* NoShiPingHao.app */;
+			productName = NoShiPinHao;
+			productReference = 622832EA0A1191941DFE7ADB /* NoShiPinHao.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -172,12 +172,12 @@
 					};
 				};
 			};
-			buildConfigurationList = BAD97E7FF231460C0EAAA94F /* Build configuration list for PBXProject "NoShiPingHao" */;
-			developmentRegion = en;
+			buildConfigurationList = BAD97E7FF231460C0EAAA94F /* Build configuration list for PBXProject "NoShiPinHao" */;
+			developmentRegion = "zh-Hans";
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				Base,
-				en,
+				"zh-Hans",
 			);
 			mainGroup = 5CFFD3B6DE4B96598C8E5187;
 			minimizedProjectReferenceProxies = 1;
@@ -186,9 +186,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				F88AD60055D76F3EA345DA62 /* NoShiPingHao */,
-				6A670E31C985925BA2494A72 /* NoShiPingHaoTests */,
-				22A490B8AF51CB3D0E23833C /* NoShiPingHaoUITests */,
+				F88AD60055D76F3EA345DA62 /* NoShiPinHao */,
+				6A670E31C985925BA2494A72 /* NoShiPinHaoTests */,
+				22A490B8AF51CB3D0E23833C /* NoShiPinHaoUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -244,12 +244,12 @@
 /* Begin PBXTargetDependency section */
 		201ADEEC357C0791646D4E2D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = F88AD60055D76F3EA345DA62 /* NoShiPingHao */;
+			target = F88AD60055D76F3EA345DA62 /* NoShiPinHao */;
 			targetProxy = 4D192F7F621FCFA1D845AC0D /* PBXContainerItemProxy */;
 		};
 		2E11EB26A8A61D2E6C6CFA58 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = F88AD60055D76F3EA345DA62 /* NoShiPingHao */;
+			target = F88AD60055D76F3EA345DA62 /* NoShiPinHao */;
 			targetProxy = CBBA8E72EBDF6210E1446197 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -266,10 +266,10 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.NoShiPingHaoTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.NoShiPinHaoTests;
 				SDKROOT = macosx;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NoShiPingHao.app/Contents/MacOS/NoShiPingHao";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NoShiPinHao.app/Contents/MacOS/NoShiPinHao";
 			};
 			name = Debug;
 		};
@@ -284,11 +284,11 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = NoShiPingHao;
+				INFOPLIST_KEY_CFBundleDisplayName = "去除视频号";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.NoShiPingHao;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.NoShiPinHao;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -308,11 +308,11 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = NoShiPingHao;
+				INFOPLIST_KEY_CFBundleDisplayName = "去除视频号";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.NoShiPingHao;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.NoShiPinHao;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
@@ -400,10 +400,10 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.NoShiPingHaoUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.NoShiPinHaoUITests;
 				SDKROOT = macosx;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				TEST_TARGET_NAME = NoShiPingHao;
+				TEST_TARGET_NAME = NoShiPinHao;
 			};
 			name = Debug;
 		};
@@ -493,10 +493,10 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.NoShiPingHaoTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.NoShiPinHaoTests;
 				SDKROOT = macosx;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NoShiPingHao.app/Contents/MacOS/NoShiPingHao";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NoShiPinHao.app/Contents/MacOS/NoShiPinHao";
 			};
 			name = Release;
 		};
@@ -511,17 +511,17 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.NoShiPingHaoUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.NoShiPinHaoUITests;
 				SDKROOT = macosx;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
-				TEST_TARGET_NAME = NoShiPingHao;
+				TEST_TARGET_NAME = NoShiPinHao;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		206040EBC8D9C0E404C4B4BD /* Build configuration list for PBXNativeTarget "NoShiPingHao" */ = {
+		206040EBC8D9C0E404C4B4BD /* Build configuration list for PBXNativeTarget "NoShiPinHao" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				59A892B1DEB8EF75AF47AEB6 /* Debug */,
@@ -530,7 +530,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		403DC06F0FC0C499EB635E9F /* Build configuration list for PBXNativeTarget "NoShiPingHaoUITests" */ = {
+		403DC06F0FC0C499EB635E9F /* Build configuration list for PBXNativeTarget "NoShiPinHaoUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7363F0FAB85FFE47204E8F19 /* Debug */,
@@ -539,7 +539,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		5039307BCF942319C83F8720 /* Build configuration list for PBXNativeTarget "NoShiPingHaoTests" */ = {
+		5039307BCF942319C83F8720 /* Build configuration list for PBXNativeTarget "NoShiPinHaoTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				05EFA634C2C33AC073467A33 /* Debug */,
@@ -548,7 +548,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
-		BAD97E7FF231460C0EAAA94F /* Build configuration list for PBXProject "NoShiPingHao" */ = {
+		BAD97E7FF231460C0EAAA94F /* Build configuration list for PBXProject "NoShiPinHao" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				BD7039D26B3A5FB8D0A31191 /* Debug */,

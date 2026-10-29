@@ -1,5 +1,5 @@
-# Security Policy
+# 安全策略
 
-Please don't report security vulnerabilities in public issues.
+请不要在公开 Issue 中报告安全漏洞。
 
-Report them privately through [GitHub's private vulnerability reporting](https://github.com/bobbyhuang-dev/NoShiPingHao/security/advisories/new). You should get a response within a few days.
+请通过 [GitHub 私密漏洞报告](https://github.com/bobbyhuang-dev/NoShiPinHao/security/advisories/new) 提交。我们通常会在几天内回复。

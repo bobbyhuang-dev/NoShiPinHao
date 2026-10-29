@@ -1,5 +1,5 @@
 import Testing
-@testable import NoShiPingHao
+@testable import NoShiPinHao
 
 struct SidebarItemTests {
     @Test func everyItemHasASymbol() {

@@ -1,10 +1,10 @@
-## Summary
+## 概述
 
-<!-- What does this change and why? -->
+<!-- 这个修改做了什么？为什么？ -->
 
-## Testing
+## 测试
 
-<!-- How did you verify it? -->
+<!-- 你是如何验证的？ -->
 
-- [ ] `xcodebuild test` passes
-- [ ] `swift-format lint` passes
+- [ ] `xcodebuild test` 通过
+- [ ] `swift-format lint` 通过

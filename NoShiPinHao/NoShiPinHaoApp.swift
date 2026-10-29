@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct NoShiPingHaoApp: App {
+struct NoShiPinHaoApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
