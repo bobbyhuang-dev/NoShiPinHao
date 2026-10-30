@@ -1,0 +1,7 @@
+// Copy to Local.xcconfig and fill in. Find your team ID in Xcode → Settings → Accounts, or at
+// https://developer.apple.com/account under Membership details.
+
+CODE_SIGN_IDENTITY = Apple Development
+DEVELOPMENT_TEAM = YOUR_TEAM_ID
+// Must be unique to you, since bundle IDs are registered to a team.
+BUNDLE_ID_PREFIX = com.yourname

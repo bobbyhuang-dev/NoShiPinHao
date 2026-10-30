@@ -1,0 +1,10 @@
+// Signing defaults. Fresh clones and CI build ad-hoc signed with a placeholder bundle ID.
+//
+// To sign with your team, copy Local.example.xcconfig to Local.xcconfig and fill it in. Local.xcconfig is
+// ignored by git. A stable signature keeps macOS privacy grants (Accessibility, Screen Recording) across rebuilds.
+
+CODE_SIGN_IDENTITY = -
+DEVELOPMENT_TEAM =
+BUNDLE_ID_PREFIX = com.example
+
+#include? "Local.xcconfig"

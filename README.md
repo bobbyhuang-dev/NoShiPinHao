@@ -28,7 +28,14 @@
 open NoShiPinHao.xcodeproj
 ```
 
-发布前，请在 **Signing & Capabilities** 中设置你的 Development Team，并替换 `com.example` 开头的 Bundle Identifier。
+如需使用自己的团队签名（这样重新构建后 macOS 隐私授权不会丢失）：
+
+```sh
+cp Config/Local.example.xcconfig Config/Local.xcconfig
+# 然后在 Config/Local.xcconfig 中设置 DEVELOPMENT_TEAM 和 BUNDLE_ID_PREFIX
+```
+
+`Config/Local.xcconfig` 已被 git 忽略。没有这个文件时，应用以 ad-hoc 签名构建，Bundle Identifier 为 `com.example.NoShiPinHao`，CI 也是这样构建的。
 
 ## 项目结构
 
@@ -44,7 +51,7 @@ open NoShiPinHao.xcodeproj
 
 - **语言：** Swift 6 语言模式，开启完整并发检查。应用 target 默认隔离到 `MainActor`，并启用 approachable concurrency。
 - **安全：** 已开启 Hardened Runtime。App Sandbox 已关闭，因为沙盒中的应用无法通过辅助功能控制其他应用。
-- **权限：** macOS 将辅助功能和屏幕录制授权与应用的代码签名绑定。使用默认的 ad-hoc 签名时，每次重新构建后可能需要重新授权；设置 Development Team 即可避免。
+- **签名：** `Config/Signing.xcconfig` 保存签名默认值，并在 `Config/Local.xcconfig` 存在时包含它。macOS 将辅助功能和屏幕录制授权与代码签名绑定，所以 ad-hoc 构建在重新构建后可能需要重新授权；使用团队签名则不需要。
 - **Info.plist：** 由 Xcode 根据 `INFOPLIST_KEY_*` 构建设置自动生成。
 - **本地化：** 开发语言为简体中文（`zh-Hans`）。`Localizable.xcstrings` 会在构建时从代码中收集字符串。
 
