@@ -10,7 +10,9 @@ struct ContentView: View {
                     Image(systemName: blocker.status.systemImage)
                         .font(.system(size: 28))
                         .foregroundStyle(blocker.status.tint)
+                        .contentTransition(.symbolEffect(.replace))
                         .frame(width: 36)
+                        .accessibilityHidden(true)
                     VStack(alignment: .leading, spacing: 2) {
                         Text("拦截视频号")
                             .font(.headline)
@@ -45,7 +47,6 @@ struct ContentView: View {
                 Text(
                     "所有数据都不会离开你的 Mac。本工具只查看微信的标题栏和“发现”列表，并在本机识别文字。"
                 )
-                .foregroundStyle(.secondary)
             }
 
             Section("活动") {
@@ -53,7 +54,10 @@ struct ContentView: View {
                 LabeledContent("已拦截次数", value: blocker.blockedCount, format: .number)
                 LabeledContent("上次拦截") {
                     if let lastBlocked = blocker.lastBlocked {
-                        Text(lastBlocked, format: .relative(presentation: .named))
+                        // 每分钟刷新，让“几分钟前”保持准确。
+                        TimelineView(.everyMinute) { _ in
+                            Text(lastBlocked, format: .relative(presentation: .named))
+                        }
                     } else {
                         Text("从未")
                     }
