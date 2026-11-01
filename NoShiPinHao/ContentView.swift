@@ -12,14 +12,14 @@ struct ContentView: View {
                         .foregroundStyle(blocker.status.tint)
                         .frame(width: 36)
                     VStack(alignment: .leading, spacing: 2) {
-                        Text("Block Channels")
+                        Text("拦截视频号")
                             .font(.headline)
                         Text(blocker.status.message)
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
                     }
                     Spacer()
-                    Toggle("Block Channels", isOn: $blocker.isEnabled)
+                    Toggle("拦截视频号", isOn: $blocker.isEnabled)
                         .toggleStyle(.switch)
                         .labelsHidden()
                 }
@@ -28,34 +28,34 @@ struct ContentView: View {
 
             Section {
                 PermissionRow(
-                    title: "Accessibility",
-                    detail: "Lets NoShiPingHao close Channels and switch WeChat away from it.",
+                    title: "辅助功能",
+                    detail: "用于关闭视频号，并让微信离开视频号页面。",
                     isGranted: blocker.hasAccessibilityAccess,
                     request: blocker.requestAccessibilityAccess
                 )
                 PermissionRow(
-                    title: "Screen Recording",
-                    detail: "Lets NoShiPingHao see when WeChat is showing Channels.",
+                    title: "屏幕录制",
+                    detail: "用于发现微信何时在显示视频号。",
                     isGranted: blocker.hasScreenRecordingAccess,
                     request: blocker.requestScreenRecordingAccess
                 )
             } header: {
-                Text("Permissions")
+                Text("权限")
             } footer: {
                 Text(
-                    "Nothing leaves your Mac. NoShiPingHao only looks at WeChat's title bar and Discover list, and reads them on-device."
+                    "所有数据都不会离开你的 Mac。本工具只查看微信的标题栏和“发现”列表，并在本机识别文字。"
                 )
                 .foregroundStyle(.secondary)
             }
 
-            Section("Activity") {
-                LabeledContent("WeChat", value: blocker.isWeChatRunning ? "Running" : "Not running")
-                LabeledContent("Channels blocked", value: blocker.blockedCount, format: .number)
-                LabeledContent("Last blocked") {
+            Section("活动") {
+                LabeledContent("微信", value: blocker.isWeChatRunning ? "正在运行" : "未运行")
+                LabeledContent("已拦截次数", value: blocker.blockedCount, format: .number)
+                LabeledContent("上次拦截") {
                     if let lastBlocked = blocker.lastBlocked {
                         Text(lastBlocked, format: .relative(presentation: .named))
                     } else {
-                        Text("Never")
+                        Text("从未")
                     }
                 }
             }
@@ -78,10 +78,10 @@ private struct PermissionRow: View {
     var body: some View {
         LabeledContent {
             if isGranted {
-                Label("Granted", systemImage: "checkmark.circle.fill")
+                Label("已授权", systemImage: "checkmark.circle.fill")
                     .foregroundStyle(.green)
             } else {
-                Button("Grant Access…", action: request)
+                Button("授权…", action: request)
             }
         } label: {
             Text(title)
@@ -111,10 +111,10 @@ extension ChannelsBlocker.Status {
 
     var message: LocalizedStringKey {
         switch self {
-        case .blocking: "On. WeChat Channels closes as soon as it opens."
-        case .waitingForWeChat: "On. Waiting for WeChat to open."
-        case .needsPermissions: "Grant the permissions below to start blocking."
-        case .paused: "Off. Channels is not blocked."
+        case .blocking: "已开启。视频号一打开就会被关闭。"
+        case .waitingForWeChat: "已开启。正在等待微信打开。"
+        case .needsPermissions: "请授予下方权限以开始拦截。"
+        case .paused: "已关闭。视频号不会被拦截。"
         }
     }
 }

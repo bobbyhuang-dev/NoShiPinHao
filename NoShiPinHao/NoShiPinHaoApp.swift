@@ -5,12 +5,12 @@ struct NoShiPinHaoApp: App {
     @State private var blocker = ChannelsBlocker()
 
     var body: some Scene {
-        Window("NoShiPingHao", id: "main") {
+        Window("去除视频号", id: "main") {
             ContentView(blocker: blocker)
         }
         .windowResizability(.contentSize)
 
-        MenuBarExtra("NoShiPingHao", systemImage: blocker.status.systemImage) {
+        MenuBarExtra("去除视频号", systemImage: blocker.status.systemImage) {
             MenuBarContent(blocker: blocker)
         }
 
@@ -25,17 +25,17 @@ private struct MenuBarContent: View {
     @Environment(\.openWindow) private var openWindow
 
     var body: some View {
-        Toggle("Block Channels", isOn: $blocker.isEnabled)
-        Text("Blocked \(blocker.blockedCount) times")
+        Toggle("拦截视频号", isOn: $blocker.isEnabled)
+        Text("已拦截 \(blocker.blockedCount) 次")
         Divider()
-        Button("Open NoShiPingHao…") {
+        Button("打开去除视频号…") {
             openWindow(id: "main")
             NSApp.activate()
         }
         SettingsLink()
             .keyboardShortcut(",")
         Divider()
-        Button("Quit NoShiPingHao") {
+        Button("退出去除视频号") {
             NSApp.terminate(nil)
         }
         .keyboardShortcut("q")

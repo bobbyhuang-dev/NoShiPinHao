@@ -43,7 +43,7 @@ final class ChannelsBlocker {
     @ObservationIgnored private var activation: NSObjectProtocol?
     /// Browser windows seen in the last scan, so new ones are covered before they are first read.
     @ObservationIgnored private var seenBrowserWindows: Set<CGWindowID> = []
-    @ObservationIgnored private let logger = Logger(subsystem: "NoShiPingHao", category: "Blocker")
+    @ObservationIgnored private let logger = Logger(subsystem: "NoShiPinHao", category: "Blocker")
 
     init(defaults: UserDefaults = .standard) {
         self.defaults = defaults
@@ -177,8 +177,8 @@ final class ChannelsBlocker {
         lastBlocked = .now
         guard defaults.bool(forKey: Keys.notifyOnBlock) else { return }
         let content = UNMutableNotificationContent()
-        content.title = String(localized: "Channels blocked")
-        content.body = String(localized: "NoShiPingHao kept WeChat from showing Channels.")
+        content.title = String(localized: "已拦截视频号")
+        content.body = String(localized: "去除视频号阻止了微信显示视频号。")
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: nil)
         UNUserNotificationCenter.current().add(request)
     }

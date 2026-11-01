@@ -5,7 +5,7 @@ import UserNotifications
 struct SettingsView: View {
     var body: some View {
         TabView {
-            Tab("General", systemImage: "gearshape") {
+            Tab("通用", systemImage: "gearshape") {
                 GeneralSettingsView()
             }
         }
@@ -20,7 +20,7 @@ private struct GeneralSettingsView: View {
 
     var body: some View {
         Form {
-            Toggle("Open at login", isOn: $launchAtLogin)
+            Toggle("登录时打开", isOn: $launchAtLogin)
                 .onChange(of: launchAtLogin) { _, enabled in
                     do {
                         if enabled {
@@ -32,7 +32,7 @@ private struct GeneralSettingsView: View {
                         launchAtLogin = SMAppService.mainApp.status == .enabled
                     }
                 }
-            Toggle("Notify when Channels is blocked", isOn: $notifyOnBlock)
+            Toggle("拦截视频号时发送通知", isOn: $notifyOnBlock)
                 .onChange(of: notifyOnBlock, initial: true) { _, enabled in
                     guard enabled else { return }
                     UNUserNotificationCenter.current().requestAuthorization(options: [.alert]) { _, _ in }
