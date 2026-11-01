@@ -34,31 +34,44 @@ enum WeChatWindows {
             .window
     }
 
-    /// Reads the tab label in a browser window's title bar.
-    static func tabStripText(of window: WeChatWindow, pid: pid_t) async throws -> [String] {
+    /// The windows on screen, which captures look up WeChat's windows in. Fetch it once per scan.
+    static func screenContent() async throws -> SCShareableContent {
+        try await SCShareableContent.excludingDesktopWindows(true, onScreenWindowsOnly: true)
+    }
+
+    /// Captures the title bar strip of a browser window, which holds its tab label.
+    static func tabStrip(of window: WeChatWindow, pid: pid_t, in content: SCShareableContent) async throws
+        -> Capture?
+    {
         let size = CGSize(width: window.frame.width, height: ChannelsDetector.tabStripHeight)
-        guard let image = try await capture(window, pid: pid, size: size) else { return [] }
-        return try await recognizeText(in: image, size: size).map(\.text)
+        return try await capture(window, pid: pid, size: size, in: content)
+    }
+
+    /// Reads the text in a capture, such as a browser window's tab label.
+    static func text(in capture: Capture) async throws -> [String] {
+        try await recognizeText(in: capture).map(\.text)
     }
 
     /// Finds the Channels row in the main window's Discover list, if Channels is selected there.
-    static func selectedChannelsRow(in window: WeChatWindow, pid: pid_t) async throws -> ChannelsDetector.DiscoverRows?
+    static func selectedChannelsRow(in window: WeChatWindow, pid: pid_t, content: SCShareableContent) async throws
+        -> ChannelsDetector.DiscoverRows?
     {
         let size = CGSize(
             width: min(window.frame.width, ChannelsDetector.discoverListRegion.width),
             height: min(window.frame.height, ChannelsDetector.discoverListRegion.height)
         )
-        guard let image = try await capture(window, pid: pid, size: size),
-            let rows = ChannelsDetector.discoverRows(in: try await recognizeText(in: image, size: size))
+        guard let capture = try await capture(window, pid: pid, size: size, in: content),
+            let rows = ChannelsDetector.discoverRows(in: try await recognizeText(in: capture))
         else { return nil }
+        let image = capture.image
 
         // Compare the backgrounds just right of each label, where a row has no text or icons.
         let scale = CGFloat(image.width) / size.width
         func background(of row: CGRect) -> RGB? {
             image.averageColor(in: CGRect(x: row.maxX + 8, y: row.midY - 3, width: 20, height: 6), scale: scale)
         }
-        guard let channels = background(of: rows.channels), let other = background(of: rows.alternative),
-            ChannelsDetector.isHighlighted(row: channels, comparedTo: other)
+        guard let channels = background(of: rows.channels),
+            ChannelsDetector.isHighlighted(row: channels, comparedTo: rows.references.compactMap(background))
         else { return nil }
 
         // A row the pointer hovers over is highlighted too.
@@ -77,8 +90,9 @@ enum WeChatWindows {
     }
 
     /// Captures the top-left `size` points of a window.
-    private static func capture(_ window: WeChatWindow, pid: pid_t, size: CGSize) async throws -> CGImage? {
-        let content = try await SCShareableContent.excludingDesktopWindows(true, onScreenWindowsOnly: true)
+    private static func capture(_ window: WeChatWindow, pid: pid_t, size: CGSize, in content: SCShareableContent)
+        async throws -> Capture?
+    {
         guard
             let scWindow = content.windows.first(where: {
                 $0.owningApplication?.processID == pid && $0.frame.isClose(to: window.frame)
@@ -92,18 +106,83 @@ enum WeChatWindows {
         config.width = Int(size.width * scale)
         config.height = Int(size.height * scale)
         config.showsCursor = false
-        return try await SCScreenshotManager.captureImage(contentFilter: filter, configuration: config)
+        let image = try await SCScreenshotManager.captureImage(contentFilter: filter, configuration: config)
+        return Capture(window: scWindow.windowID, size: size, image: image)
+    }
+}
+
+// MARK: - Text recognition
+
+extension WeChatWindows {
+    /// When text was last recognized, so the loop knows when the recognizer may have gone cold.
+    private(set) static var lastRecognition = Date.distantPast
+
+    /// Text read from each window's last capture, reused while the window looks the same.
+    private static var recognized: [CGWindowID: (size: CGSize, pixels: Data, lines: [ChannelsDetector.TextLine])] =
+        [:]
+
+    /// Loads the text recognizer's models.
+    ///
+    /// The first recognition after the system has unloaded them takes 10 seconds or more, while later ones take a
+    /// fraction of a second. Warming up ahead of time keeps that delay out of the first block.
+    static func warmUpTextRecognition() async {
+        let size = CGSize(width: 240, height: 60)
+        let image = NSImage(size: size, flipped: false) { rect in
+            NSColor.white.setFill()
+            rect.fill()
+            let label = ChannelsDetector.channelsLabels[0] as NSString
+            label.draw(at: CGPoint(x: 12, y: 14), withAttributes: [.font: NSFont.systemFont(ofSize: 24)])
+            return true
+        }
+        guard let cgImage = image.cgImage(forProposedRect: nil, context: nil, hints: nil) else { return }
+        lastRecognition = .now
+        _ = try? await textRequest.perform(on: cgImage)
+        lastRecognition = .now
     }
 
-    /// Recognizes text in an image of `size` points, with frames in points from its top-left corner.
-    private static func recognizeText(in image: CGImage, size: CGSize) async throws -> [ChannelsDetector.TextLine] {
+    private static var textRequest: RecognizeTextRequest {
         var request = RecognizeTextRequest()
         request.recognitionLanguages = [Locale.Language(identifier: "zh-Hans"), Locale.Language(identifier: "en-US")]
-        return try await request.perform(on: image).compactMap { observation in
-            guard let text = observation.topCandidates(1).first?.string else { return nil }
-            return .init(text: text, frame: observation.boundingBox.toImageCoordinates(size, origin: .upperLeft))
-        }
+        return request
     }
+
+    /// Whether a capture looks the same as its window's last one, so its text is known without recognizing it.
+    static func hasKnownText(_ capture: Capture) -> Bool {
+        guard let cached = recognized[capture.window], let pixels = capture.image.dataProvider?.data as Data?
+        else { return false }
+        return cached.size == capture.size && cached.pixels == pixels
+    }
+
+    /// Recognizes text in a capture, with frames in points from its top-left corner.
+    ///
+    /// Recognition is the slowest step of a scan, so a window that hasn't changed since its last capture reuses
+    /// that capture's text.
+    private static func recognizeText(in capture: Capture) async throws -> [ChannelsDetector.TextLine] {
+        let pixels = capture.image.dataProvider?.data as Data?
+        if let pixels, let cached = recognized[capture.window], cached.size == capture.size, cached.pixels == pixels {
+            return cached.lines
+        }
+        let lines = try await textRequest.perform(on: capture.image).compactMap {
+            observation -> ChannelsDetector.TextLine? in
+            guard let text = observation.topCandidates(1).first?.string else { return nil }
+            return .init(
+                text: text, frame: observation.boundingBox.toImageCoordinates(capture.size, origin: .upperLeft))
+        }
+        lastRecognition = .now
+        if let pixels {
+            if recognized.count > 16 { recognized.removeAll() }
+            recognized[capture.window] = (capture.size, pixels, lines)
+        }
+        return lines
+    }
+}
+
+/// The top-left part of a window, captured as an image.
+struct Capture {
+    let window: CGWindowID
+    /// Size in points of the captured region.
+    let size: CGSize
+    let image: CGImage
 }
 
 /// Clicks on behalf of the user, then puts the pointer back.

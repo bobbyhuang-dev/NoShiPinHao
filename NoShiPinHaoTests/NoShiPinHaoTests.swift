@@ -41,6 +41,7 @@ struct DiscoverListTests {
         let rows = try #require(ChannelsDetector.discoverRows(in: discoverList))
         #expect(rows.channels.minY == 80)
         #expect(rows.alternative.minY == 46)
+        #expect(rows.references.map(\.minY) == [12, 46, 114])
     }
 
     @Test func findsChineseLabels() {
@@ -59,7 +60,40 @@ struct DiscoverListTests {
 
     @Test func comparesRowBackgrounds() {
         let unselected = RGB(red: 61, green: 61, blue: 62)
-        #expect(ChannelsDetector.isHighlighted(row: RGB(red: 95, green: 176, blue: 129), comparedTo: unselected))
-        #expect(!ChannelsDetector.isHighlighted(row: RGB(red: 64, green: 64, blue: 64), comparedTo: unselected))
+        #expect(ChannelsDetector.isHighlighted(row: RGB(red: 95, green: 176, blue: 129), comparedTo: [unselected]))
+        #expect(!ChannelsDetector.isHighlighted(row: RGB(red: 64, green: 64, blue: 64), comparedTo: [unselected]))
+        #expect(!ChannelsDetector.isHighlighted(row: unselected, comparedTo: []))
+    }
+
+    @Test func ignoresAnotherSelectedRow() {
+        let unselected = RGB(red: 61, green: 61, blue: 62)
+        let moments = RGB(red: 95, green: 176, blue: 129)
+        #expect(!ChannelsDetector.isHighlighted(row: unselected, comparedTo: [unselected, moments, unselected]))
+    }
+}
+
+@MainActor
+struct ScanRequestsTests {
+    @Test func signalWakesWaitEarly() async {
+        let requests = ScanRequests()
+        let clock = ContinuousClock()
+        let start = clock.now
+        Task { requests.signal() }
+        await requests.wait(upTo: .seconds(5))
+        #expect(clock.now - start < .seconds(1))
+    }
+
+    @Test func signalBeforeWaitIsKept() async {
+        let requests = ScanRequests()
+        let clock = ContinuousClock()
+        let start = clock.now
+        requests.signal()
+        await requests.wait(upTo: .seconds(5))
+        #expect(clock.now - start < .seconds(1))
+    }
+
+    @Test func waitEndsAfterTimeout() async {
+        let requests = ScanRequests()
+        await requests.wait(upTo: .milliseconds(50))
     }
 }

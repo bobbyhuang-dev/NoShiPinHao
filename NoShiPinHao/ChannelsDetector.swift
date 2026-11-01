@@ -38,6 +38,8 @@ nonisolated enum ChannelsDetector {
         var channels: CGRect
         /// Another row in the list, to select instead of Channels.
         var alternative: CGRect
+        /// The Discover header and the list's other rows, which Channels' background is compared against.
+        var references: [CGRect]
     }
 
     static func isBrowserWindow(title: String) -> Bool {
@@ -59,17 +61,22 @@ nonisolated enum ChannelsDetector {
         guard let header = lines.first(where: { discoverHeaders.contains(compact($0.text)) }) else { return nil }
         let rows = lines.filter { $0.frame.minY > header.frame.maxY }
         guard let channels = rows.first(where: { isChannelsLabel($0.text) }) else { return nil }
-        let alternative =
-            rows
-            .filter { $0 != channels && abs($0.frame.minX - channels.frame.minX) < 12 }
-            .min { $0.frame.minY < $1.frame.minY }
-        guard let alternative else { return nil }
-        return DiscoverRows(channels: channels.frame, alternative: alternative.frame)
+        let others = rows.filter { $0 != channels && abs($0.frame.minX - channels.frame.minX) < 12 }
+        guard let alternative = others.min(by: { $0.frame.minY < $1.frame.minY }) else { return nil }
+        return DiscoverRows(
+            channels: channels.frame, alternative: alternative.frame, references: [header.frame] + others.map(\.frame))
     }
 
-    /// Whether a row's background stands out from an unselected row's, meaning it is selected.
-    static func isHighlighted(row: RGB, comparedTo reference: RGB) -> Bool {
-        max(abs(row.red - reference.red), abs(row.green - reference.green), abs(row.blue - reference.blue)) > 24
+    /// Whether a row's background stands out from all the others', meaning it is selected.
+    ///
+    /// Standing out from a single row isn't enough: that row may be the selected or hovered one, as when Moments is
+    /// open, and then it's the one that stands out.
+    static func isHighlighted(row: RGB, comparedTo references: [RGB]) -> Bool {
+        !references.isEmpty
+            && references.allSatisfy { reference in
+                max(abs(row.red - reference.red), abs(row.green - reference.green), abs(row.blue - reference.blue))
+                    > 24
+            }
     }
 
     /// A label is a Channels row when it reads as the label alone, allowing a misread icon or two before it.
