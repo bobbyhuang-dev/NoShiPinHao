@@ -52,6 +52,10 @@ final class ChannelsBlocker {
         blockedCount = defaults.integer(forKey: Keys.blockedCount)
         lastBlocked = defaults.object(forKey: Keys.lastBlocked) as? Date
         refreshPermissions()
+        // 通知默认开启，所以启动时就请求授权，否则在用户打开设置前通知都发不出去。
+        if defaults.bool(forKey: Keys.notifyOnBlock) {
+            UNUserNotificationCenter.current().requestAuthorization(options: [.alert]) { _, _ in }
+        }
         activation = NSWorkspace.shared.notificationCenter.addObserver(
             forName: NSWorkspace.didActivateApplicationNotification, object: nil, queue: .main
         ) { [scanRequests] _ in
