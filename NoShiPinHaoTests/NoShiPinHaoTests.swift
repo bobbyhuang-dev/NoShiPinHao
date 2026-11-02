@@ -42,6 +42,7 @@ struct DiscoverListTests {
         #expect(rows.channels.minY == 80)
         #expect(rows.alternative.minY == 46)
         #expect(rows.references.map(\.minY) == [12, 46, 114])
+        #expect(rows.header.minY == 12)
     }
 
     @Test func findsChineseLabels() {
@@ -63,6 +64,32 @@ struct DiscoverListTests {
         #expect(ChannelsDetector.isHighlighted(row: RGB(red: 95, green: 176, blue: 129), comparedTo: [unselected]))
         #expect(!ChannelsDetector.isHighlighted(row: RGB(red: 64, green: 64, blue: 64), comparedTo: [unselected]))
         #expect(!ChannelsDetector.isHighlighted(row: unselected, comparedTo: []))
+    }
+
+    @Test func treatsHoverAsSelectedOnlyAfterAClickOnTheRow() {
+        let row = CGRect(x: 100, y: 200, width: 140, height: 30)
+        let inside = CGPoint(x: 150, y: 215)
+        let outside = CGPoint(x: 150, y: 400)
+        #expect(ChannelsDetector.highlightMeansSelected(row: row, pointer: outside, lastClick: nil))
+        #expect(!ChannelsDetector.highlightMeansSelected(row: row, pointer: inside, lastClick: nil))
+        #expect(!ChannelsDetector.highlightMeansSelected(row: row, pointer: inside, lastClick: outside))
+        #expect(ChannelsDetector.highlightMeansSelected(row: row, pointer: inside, lastClick: inside))
+    }
+
+    @Test func comparesPixelsWithSomeTolerance() {
+        let background: [UInt8] = Array(repeating: [40, 40, 40, 255], count: 200).flatMap { $0 }
+        var shifted = background
+        for index in stride(from: 0, to: shifted.count, by: 4) { shifted[index] = 60 }
+        var oneSpeck = background
+        oneSpeck[0] = 255
+        var text = background
+        for index in stride(from: 0, to: 40 * 4, by: 4) { text[index...index + 2] = [230, 230, 230] }
+        #expect(ChannelsDetector.looksSame(background, background))
+        #expect(ChannelsDetector.looksSame(background, shifted))
+        #expect(ChannelsDetector.looksSame(background, oneSpeck))
+        #expect(!ChannelsDetector.looksSame(background, text))
+        #expect(!ChannelsDetector.looksSame(background, Array(background.dropLast(4))))
+        #expect(!ChannelsDetector.looksSame([], []))
     }
 
     @Test func ignoresAnotherSelectedRow() {
