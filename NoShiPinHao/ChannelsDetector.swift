@@ -40,6 +40,8 @@ nonisolated enum ChannelsDetector {
         var alternative: CGRect
         /// The Discover header and the list's other rows, which Channels' background is compared against.
         var references: [CGRect]
+        /// “发现”标题。它的像素没变，就说明列表还在原处，不必重新识别文字。
+        var header: CGRect
     }
 
     static func isBrowserWindow(title: String) -> Bool {
@@ -64,7 +66,8 @@ nonisolated enum ChannelsDetector {
         let others = rows.filter { $0 != channels && abs($0.frame.minX - channels.frame.minX) < 12 }
         guard let alternative = others.min(by: { $0.frame.minY < $1.frame.minY }) else { return nil }
         return DiscoverRows(
-            channels: channels.frame, alternative: alternative.frame, references: [header.frame] + others.map(\.frame))
+            channels: channels.frame, alternative: alternative.frame, references: [header.frame] + others.map(\.frame),
+            header: header.frame)
     }
 
     /// Whether a row's background stands out from all the others', meaning it is selected.
@@ -77,6 +80,25 @@ nonisolated enum ChannelsDetector {
                 max(abs(row.red - reference.red), abs(row.green - reference.green), abs(row.blue - reference.blue))
                     > 24
             }
+    }
+
+    /// 指针悬停的行也会高亮。所以指针停在视频号一行上时，只有用户最近一次按下鼠标也在这一行，高亮才算选中。
+    static func highlightMeansSelected(row: CGRect, pointer: CGPoint, lastClick: CGPoint?) -> Bool {
+        !row.contains(pointer) || lastClick.map(row.contains) == true
+    }
+
+    /// 两块同样大小的 RGBA 像素看起来是否相同。
+    ///
+    /// 允许少量像素不同，这样半透明窗口背后的内容变化不会让缓存失效；而换成另一段文字时，大部分笔画都会不同。
+    static func looksSame(_ pixels: [UInt8], _ other: [UInt8]) -> Bool {
+        guard pixels.count == other.count, pixels.count >= 4, pixels.count.isMultiple(of: 4) else { return false }
+        var differing = 0
+        for start in stride(from: 0, to: pixels.count, by: 4) {
+            let isDifferent = (start..<start + 3).contains { abs(Int(pixels[$0]) - Int(other[$0])) > 32 }
+            if isDifferent { differing += 1 }
+        }
+        // 最多 1% 的像素不同。
+        return differing * 100 <= pixels.count / 4
     }
 
     /// A label is a Channels row when it reads as the label alone, allowing a misread icon or two before it.

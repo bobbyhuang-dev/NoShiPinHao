@@ -53,15 +53,17 @@ enum WeChatWindows {
     }
 
     /// Finds the Channels row in the main window's Discover list, if Channels is selected there.
-    static func selectedChannelsRow(in window: WeChatWindow, pid: pid_t, content: SCShareableContent) async throws
-        -> ChannelsDetector.DiscoverRows?
-    {
+    ///
+    /// `lastClick` 是用户在微信中最近一次按下鼠标的位置，用来区分点击选中和指针悬停。
+    static func selectedChannelsRow(
+        in window: WeChatWindow, pid: pid_t, content: SCShareableContent, lastClick: CGPoint?
+    ) async throws -> ChannelsDetector.DiscoverRows? {
         let size = CGSize(
             width: min(window.frame.width, ChannelsDetector.discoverListRegion.width),
             height: min(window.frame.height, ChannelsDetector.discoverListRegion.height)
         )
         guard let capture = try await capture(window, pid: pid, size: size, in: content),
-            let rows = ChannelsDetector.discoverRows(in: try await recognizeText(in: capture))
+            let rows = try await discoverRows(in: capture)
         else { return nil }
         let image = capture.image
 
@@ -74,9 +76,36 @@ enum WeChatWindows {
             ChannelsDetector.isHighlighted(row: channels, comparedTo: rows.references.compactMap(background))
         else { return nil }
 
-        // A row the pointer hovers over is highlighted too.
         let channelsRow = rows.channels.offsetBy(dx: window.frame.minX, dy: window.frame.minY).insetBy(dx: -40, dy: -8)
-        guard !channelsRow.contains(Mouse.location) else { return nil }
+        guard ChannelsDetector.highlightMeansSelected(row: channelsRow, pointer: Mouse.location, lastClick: lastClick)
+        else { return nil }
+        return rows
+    }
+
+    /// 每个窗口上次找到的“发现”列表布局，以及当时“发现”标题的像素。
+    private static var discoverLayouts:
+        [CGWindowID: (size: CGSize, header: [UInt8], rows: ChannelsDetector.DiscoverRows)] = [:]
+
+    /// 找出截图中“发现”列表的各行。
+    ///
+    /// 识别文字是最慢的一步。点击视频号会改变截图，所以整图缓存帮不上忙；但只要“发现”标题看起来没变，列表就还在
+    /// 原处，可以直接沿用上次的布局，只需比较各行背景色。
+    private static func discoverRows(in capture: Capture) async throws -> ChannelsDetector.DiscoverRows? {
+        let scale = CGFloat(capture.image.width) / capture.size.width
+        if let layout = discoverLayouts[capture.window], layout.size == capture.size,
+            let header = capture.image.pixels(in: layout.rows.header, scale: scale),
+            ChannelsDetector.looksSame(header, layout.header)
+        {
+            return layout.rows
+        }
+        guard let rows = ChannelsDetector.discoverRows(in: try await recognizeText(in: capture)),
+            let header = capture.image.pixels(in: rows.header, scale: scale)
+        else {
+            discoverLayouts[capture.window] = nil
+            return nil
+        }
+        if discoverLayouts.count > 16 { discoverLayouts.removeAll() }
+        discoverLayouts[capture.window] = (capture.size, header, rows)
         return rows
     }
 
@@ -234,6 +263,30 @@ extension AXUIElement {
 }
 
 extension CGImage {
+    /// 以点为单位的一块区域的 sRGB RGBA 像素，图像每点有 `scale` 个像素。
+    fileprivate func pixels(in rect: CGRect, scale: CGFloat) -> [UInt8]? {
+        let pixels = CGRect(
+            x: rect.minX * scale, y: rect.minY * scale, width: rect.width * scale, height: rect.height * scale
+        )
+        .integral
+        guard let crop = cropping(to: pixels) else { return nil }
+        let width = crop.width
+        let height = crop.height
+        var data = [UInt8](repeating: 0, count: width * height * 4)
+        let isDrawn = data.withUnsafeMutableBytes { buffer in
+            guard
+                let context = CGContext(
+                    data: buffer.baseAddress, width: width, height: height, bitsPerComponent: 8,
+                    bytesPerRow: width * 4, space: CGColorSpace(name: CGColorSpace.sRGB)!,
+                    bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue
+                )
+            else { return false }
+            context.draw(crop, in: CGRect(x: 0, y: 0, width: width, height: height))
+            return true
+        }
+        return isDrawn ? data : nil
+    }
+
     /// The average color of a rect given in points, in an image with `scale` pixels per point.
     fileprivate func averageColor(in rect: CGRect, scale: CGFloat) -> RGB? {
         let pixels = CGRect(

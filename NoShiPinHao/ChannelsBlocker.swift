@@ -41,6 +41,11 @@ final class ChannelsBlocker {
     @ObservationIgnored private let scanRequests = ScanRequests()
     @ObservationIgnored private var weChatEvents: WeChatEvents?
     @ObservationIgnored private var activation: NSObjectProtocol?
+    @ObservationIgnored private var clicks: Any?
+    /// 用户在微信中最近一次按下鼠标的位置（全局坐标，原点在主屏幕左上角）。
+    @ObservationIgnored private var lastClick: CGPoint?
+    /// 在此之前加快扫描，好在微信重绘后立刻看到点击的结果。
+    @ObservationIgnored private var fastScanUntil = Date.distantPast
     /// Browser windows seen in the last scan, so new ones are covered before they are first read.
     @ObservationIgnored private var seenBrowserWindows: Set<CGWindowID> = []
     @ObservationIgnored private let logger = Logger(subsystem: "NoShiPinHao", category: "Blocker")
@@ -60,6 +65,11 @@ final class ChannelsBlocker {
             forName: NSWorkspace.didActivateApplicationNotification, object: nil, queue: .main
         ) { [scanRequests] _ in
             MainActor.assumeIsolated { scanRequests.signal() }
+        }
+        // 点击“发现”中的视频号不会发出辅助功能通知，所以直接监听鼠标，点击后马上扫描。
+        clicks = NSEvent.addGlobalMonitorForEvents(matching: [.leftMouseDown, .leftMouseUp]) { [weak self] event in
+            let location = event.cgEvent?.location
+            MainActor.assumeIsolated { self?.weChatClicked(event.type, at: location) }
         }
         updateLoop()
     }
@@ -92,7 +102,7 @@ final class ChannelsBlocker {
                 guard let self else { return }
                 await scan()
                 // Scan again at the next change in WeChat, or after a while, as not every change sends an event.
-                await scanRequests.wait(upTo: Self.scanInterval)
+                await scanRequests.wait(upTo: Date.now < fastScanUntil ? Self.fastScanInterval : Self.scanInterval)
             }
         }
     }
@@ -135,20 +145,32 @@ final class ChannelsBlocker {
             // Discover → Channels shows inside the main window. Only check it while WeChat is in front: that's the
             // only time it can be seen, and the only time it's safe to click in it.
             guard NSWorkspace.shared.frontmostApplication == weChat, let window = WeChatWindows.mainWindow(of: weChat),
-                let rows = try await WeChatWindows.selectedChannelsRow(in: window, pid: pid, content: content),
+                let rows = try await WeChatWindows.selectedChannelsRow(
+                    in: window, pid: pid, content: content, lastClick: lastClick),
                 isEnabled,
-                Date.now.timeIntervalSince(lastDiscoverClick) > 2.5
+                Date.now.timeIntervalSince(lastDiscoverClick) > Self.discoverClickCooldown
             else { return }
             // Select another Discover item, so Discover stays usable and doesn't reopen on Channels.
             let target = CGPoint(
                 x: window.frame.minX + rows.alternative.midX, y: window.frame.minY + rows.alternative.midY)
             if Mouse.click(at: target, inWindowOf: pid) {
                 lastDiscoverClick = .now
+                // 指针被移回视频号一行上，只是悬停，不能再当作选中。
+                lastClick = nil
                 recordBlock()
             }
         } catch {
             logger.error("Could not read WeChat window: \(error.localizedDescription)")
         }
+    }
+
+    private func weChatClicked(_ type: NSEvent.EventType, at location: CGPoint?) {
+        guard isEnabled,
+            NSWorkspace.shared.frontmostApplication?.bundleIdentifier == ChannelsDetector.weChatBundleIdentifier
+        else { return }
+        if type == .leftMouseDown { lastClick = location ?? Mouse.location }
+        fastScanUntil = .now + Self.fastScanDuration
+        scanRequests.signal()
     }
 
     /// Covers a browser window while its changed tab strip is read, so Channels can't be seen while that runs.
@@ -197,6 +219,15 @@ extension ChannelsBlocker {
     /// How often WeChat's windows are checked when no event comes sooner. Unchanged windows aren't read again, so
     /// checks are cheap.
     static let scanInterval = Duration.milliseconds(250)
+
+    /// 在微信中点击后的一小段时间内，扫描的间隔。
+    static let fastScanInterval = Duration.milliseconds(40)
+
+    /// 点击后加快扫描多久。足够微信重绘，又不至于一直高频扫描。
+    static let fastScanDuration: TimeInterval = 0.6
+
+    /// 自动点开“发现”中的另一项后，至少隔多久才再点一次，以免微信还没重绘就重复点击。
+    static let discoverClickCooldown: TimeInterval = 1
 
     /// How long text recognition may sit idle before it is warmed up again.
     static let keepWarmInterval: TimeInterval = 60
